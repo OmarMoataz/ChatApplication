@@ -1,28 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import socketIOClient from 'socket.io-client';
 
 class App extends Component {
+  constructor() {
+    super();
+    
+    this.state = {
+      endpoint: "http://localhost:4001" 
+    }
+  }
+  
+  send = () => {
+    const socket = socketIOClient(this.state.endpoint);
+
+    
+    socket.emit('test', 'test');
+  }
+  
   render() {
+    const socket = socketIOClient(this.state.endpoint);
+    
+    socket.on('msg', (msg) => {
+      console.log(`received msg ${msg}`);
+    })
+     
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div style={{ textAlign: "center" }}>
+        <button onClick={() => this.send()}>test</button>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
