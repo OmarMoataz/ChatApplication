@@ -6,7 +6,7 @@ class App extends Component {
     super();
     
     this.state = {
-      endpoint: "http://localhost:4001" 
+      endpoint: "http://localhost:3030" 
     }
   }
   
