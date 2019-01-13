@@ -25,9 +25,30 @@ class App extends Component {
     })
      
     return (
-      <div style={{ textAlign: "center" }}>
-        <button onClick={() => this.send()}>test</button>
-      </div>
+      <div>
+      <div className={"chat"}>
+  <div className={"chat-title"}>
+    <h1>Fabio Ottaviani</h1>
+    <h2>Supah</h2>
+    <figure className={"avatar"}>
+      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" alt="" /></figure>
+  </div>
+  <div className={"messages"}>
+    <div className={"messages-content"}>
+    <div className={"message new"}><figure className={"avatar"}><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" alt="" />
+    </figure>Hi there, I'm Fabio and you?
+    <div className={"timestamp"}>18:48</div>
+    </div>
+    </div>
+  </div>
+  <div className={"message-box"}>
+    <textarea type="text" className={"message-input"} placeholder="Type message..."></textarea>
+    <button type="submit" className={"message-submit"}>Send</button>
+  </div>
+
+  </div>
+  <div className={"bg"}></div>
+  </div>
     )
   }
 }
