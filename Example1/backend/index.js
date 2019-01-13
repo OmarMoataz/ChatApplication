@@ -6,12 +6,28 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-io.on('connection', socket => {
-  console.log('User connected')
-  
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
+users = [];
+connections = [];
+
+io.sockets.on('connection', function(socket) {
+  connections.push(socket);
+  console.log('Connected %s sockets connected', connections.length);
+
+  //Disconnecting
+  socket.on('disconnect', (reason) => {
+    if(reason === 'transport close')
+    {
+      socket.disconnect();
+      connections.splice(connections.indexOf(socket), 1);
+      console.log('Disconnected: %s sockets disconnected', connections.length);
+    }
   })
+
+  socket.on('send message', function(data) {
+    io.sockets.emit('new message', {msg: data});
+  });
+  
 })
+
 
 server.listen(port, () => console.log(`Listening on port ${port}`))
