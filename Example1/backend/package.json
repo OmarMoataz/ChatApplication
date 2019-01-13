@@ -4,7 +4,8 @@
   "description": "Example 1 backend",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node index.js"
   },
   "author": "AhGhanima",
   "license": "ISC",

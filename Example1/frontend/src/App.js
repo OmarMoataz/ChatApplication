@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
+import { Message } from './Components/message/message';
 
 class App extends Component {
   constructor() {
@@ -35,10 +36,7 @@ class App extends Component {
   </div>
   <div className={"messages"}>
     <div className={"messages-content"}>
-    <div className={"message new"}><figure className={"avatar"}><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" alt="" />
-    </figure>Hi there, I'm Fabio and you?
-    <div className={"timestamp"}>18:48</div>
-    </div>
+      <Message author="a" msg="test" img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" time="now" />
     </div>
   </div>
   <div className={"message-box"}>
