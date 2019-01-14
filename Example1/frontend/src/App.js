@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
 import { Message } from './Components/message/message';
+import { User } from './Components/user/user';
 
 class App extends Component {
   constructor() {
@@ -28,22 +29,16 @@ class App extends Component {
     return (
       <div>
       <div className={"chat"}>
-  <div className={"chat-title"}>
-    <h1>Fabio Ottaviani</h1>
-    <h2>Supah</h2>
-    <figure className={"avatar"}>
-      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" alt="" /></figure>
-  </div>
-  <div className={"messages"}>
-    <div className={"messages-content"}>
-      <Message author="a" msg="test" img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" time="now" />
-    </div>
-  </div>
-  <div className={"message-box"}>
-    <textarea type="text" className={"message-input"} placeholder="Type message..."></textarea>
-    <button type="submit" className={"message-submit"}>Send</button>
-  </div>
-
+      <User img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" location="Cairo" name="Omar Moataz"/>
+      <div className={"messages"}>
+        <div className={"messages-content"}>
+          <Message author="a" msg="test" img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" time="now" />
+        </div>
+      </div>
+      <div className={"message-box"}>
+        <textarea type="text" className={"message-input"} placeholder="Type message..."></textarea>
+        <button type="submit" className={"message-submit"}>Send</button>
+      </div>
   </div>
   <div className={"bg"}></div>
   </div>
