@@ -7,13 +7,14 @@ export class Message extends Component {
       author: props.author,
       msg: props.msg,
       image: props.img,
-      time: props.time
+      time: props.time,
+      right: props.right
     }
   }
 
   render()  {
       return (
-          <div>
+          <div className={(this.state.right ? 'right' : '')}>
                 <div className={"message new"}>
                 <figure className={"avatar"}>
                 <img src={this.state.image} alt="" />
