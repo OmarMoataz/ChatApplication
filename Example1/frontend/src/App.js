@@ -10,7 +10,11 @@ class App extends Component {
 
     this.state = {
       endpoint: "http://localhost:3030",
-      messages: []
+      messages: [
+        { id:1, author: "Omar Moataz", msg:"Hi", img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg", time: "now"},
+        { id:2, author: "Omar Moataz", msg:"How are you?", img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg", time: "now" },
+        { id:3, author: "Omar Moataz", msg:"I'm good", img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg", time: "now" }
+      ]
     };
   }
 
@@ -21,13 +25,17 @@ class App extends Component {
   };
 
   handleSubmit(message) {
-    console.log(this.messages);
+    console.log(message);
     // this.setState({
     //   messages: [...this.state.messages, message]
     // })
-    const messages = this.state.messages.slice();
-    messages.push(message);
-    this.setState({messages});
+    // const messages = this.state.messages.slice();
+    // messages.push(message);
+    // this.setState({messages});
+    
+    // this.setState({
+    //   messages: this.state.messages.concat(message)
+    // })
   }
 
   render() {
@@ -47,12 +55,7 @@ class App extends Component {
           />
           <div className={"messages"}>
             <div className={"messages-content"}>
-              <Message
-                author="a"
-                msg="test"
-                img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg"
-                time="now"
-              />
+              {this.state.messages.map(message => <Message key={message.id} img={message.img} author={message.author} msg={message.msg} time={message.time}/>)}
             </div>
           </div>
           <ComposeMessage onSubmit={this.handleSubmit} />
