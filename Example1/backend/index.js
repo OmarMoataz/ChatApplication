@@ -23,9 +23,13 @@ io.sockets.on('connection', function(socket) {
     }
   })
 
-  socket.on('send message', function(data) {
-    io.sockets.emit('new message', {msg: data});
-  });
+
+  socket.on('send-message', (msg) => {
+    console.log('sending message back to client');
+      socket.broadcast.emit('send-message', msg);
+    
+    //socket.emit('send-message', msg);
+  })
   
 })
 
