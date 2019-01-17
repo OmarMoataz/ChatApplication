@@ -16,9 +16,6 @@ class Chat extends Component {
       userImg: `https://ui-avatars.com/api/?name=${this.makeName()}`,
       id: params.match.params.id,
       messages: [
-    //     { id: 1, author: "Omar Moataz", msg: "Hi", img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg", time: "now" },
-    //     { id: 2, author: "Omar Moataz", msg: "How are you?", img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg", time: "now" },
-    //     { id: 3, author: "Omar Moataz", msg: "I'm good", img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg", time: "now" }
       ]
     };
   }

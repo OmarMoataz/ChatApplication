@@ -8,7 +8,6 @@ class App extends Component {
     return (
       <Router>
         <div>
-  
           <Route  path="/:id" component={Chat} />
         </div>
       </Router>

@@ -8,12 +8,20 @@ class ComposeMessage extends Component {
 
   updateInputValue() {
     this.props.onSubmit(this.messageReference.current.value);
+    this.setState({}, (() => {
+      this.setState({messageReference: ""});
+      this.messageReference.current.value = "";
+    }));
   }
 
   render() {
     return (
       <div className={"message-box"}>
-        <textarea
+        <textarea onKeyUp= {(event) => { 
+          if(event.keyCode === 13) {
+            this.updateInputValue();
+          }
+        }}
           ref={this.messageReference}
           type="text"
           className={"message-input"}
