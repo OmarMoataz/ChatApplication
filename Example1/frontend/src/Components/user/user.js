@@ -14,7 +14,7 @@ export class User extends Component {
       return (
         <div className={"chat-title"}>
           <h1> {this.state.name}</h1>
-          <h2> {this.state.location} </h2>
+          {/* <h2> {this.state.location} </h2> */}
           <figure className={"avatar"}>
             <img src={this.state.image} alt="Profile" />
           </figure>
