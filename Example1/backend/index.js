@@ -23,10 +23,15 @@ io.sockets.on('connection', function(socket) {
     }
   })
 
+  socket.on('join', (msg) =>  {
+    console.log('joining ',  msg);
+    socket.join(msg);
+  })
 
   socket.on('send-message', (msg) => {
-    console.log('sending message back to client');
-      socket.broadcast.emit('send-message', msg);
+    console.log(msg.room);
+    socket.broadcast.to(msg.room).emit('send-message',msg);
+      //socket.broadcast.emit('send-message', msg);
     
     //socket.emit('send-message', msg);
   })
