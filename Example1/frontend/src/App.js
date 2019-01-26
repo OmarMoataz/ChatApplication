@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Chat from "./Components/Chat";
+import Chat from "./Components/Chat/Chat.js";
 class App extends Component {
 
   render() {

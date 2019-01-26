@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-import { Message } from "./message/message";
-import { User } from "./user/user";
-import ComposeMessage from "./ComposeMessage/ComposeMessage";
+import { Message } from "../message/message";
+import { User } from "../user/user";
+import ComposeMessage from "../ComposeMessage/ComposeMessage";
+import './Chat.css';
 
 
 class Chat extends Component {
-    socket;
   constructor(params) {
     super();
     this.socket = socketIOClient(`http://localhost:3030/`);
     this.state = {
-      //endpoint: "http://localhost:3030",
       roomImg: `https://ui-avatars.com/api/?name=${params.match.params.id}`,
       userImg: `https://ui-avatars.com/api/?name=${this.makeName()}`,
       id: params.match.params.id,
@@ -60,9 +59,6 @@ class Chat extends Component {
   }
 
   render() {
-
-    
-
     return (
       <div>
         <div className={"chat"}>
@@ -71,7 +67,7 @@ class Chat extends Component {
             location="Cairo"
             name={this.state.id}
           />
-          <div className={"messages "}>
+          <div className={"messages"}>
             <div className={"messages-content"}>
               {this.state.messages.map(message => <Message key={`${message.id}`} img={message.img} author={message.author} msg={message.msg} time={message.time} right={/*message.author != this.state.author*/ false}/>)}
             </div>
