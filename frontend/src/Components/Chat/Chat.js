@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 
 import { Message } from "../message/message";
 import { User } from "../user/user";
@@ -11,54 +11,51 @@ import "./Chat.css";
 class Chat extends Component {
   constructor(params) {
     super(params);
+    this.author = "Omar Moataz";
     this.socket = socketIOClient(`http://localhost:3030/`);
     this.state = {
       messages: [],
       id: null
     };
   }
-  
-  componentDidMount() {
-    const idParser = this.props.location.pathname.split('/');
-    this.setState({ id: idParser[idParser.length - 1]});
 
-    this.setState({ author: "Omar Moataz" });
+  componentDidMount() {
+    this.setState({ id: this.props.match.params.id || 1 }, () => {
+      this.socket.emit("join", this.state.id);
   
-    this.socket.emit("join", this.state.id);
-  
-    this.socket.on("send-message", (msg) => {
-      console.log("This isn't getting called");
-      const currentMsg = {
-        id: new Date().getTime(),
-        author: msg.author,
-        msg: msg.msg,
-        img: `https://ui-avatars.com/api/?name=${msg.author}`,
-        time: "now",
-      };
-      this.setState((prevState) => ({
-        messages: [...prevState.messages, currentMsg],
-      }));
-    });
+      this.socket.on("send-message", (msg) => {
+        const currentMsg = {
+          id: new Date().getTime(),
+          author: msg.author,
+          msg: msg.msg,
+          img: `https://ui-avatars.com/api/?name=${msg.author}`,
+          time: "now",
+        };
+        this.setState((prevState) => ({
+          messages: [...prevState.messages, currentMsg],
+        }));
+      });
+    })
   }
 
   handleSubmit = (msg) => {
-    const { id, author } = this.state;
+    const { id } = this.state;
 
     this.setState((prevState) => ({
       messages: [
         ...prevState.messages,
         {
-          author,
+          author: this.author,
           msg,
           id: new Date().getTime(),
-          img: `https://ui-avatars.com/api/?name=${this.state.author}`,
+          img: `https://ui-avatars.com/api/?name=${this.author}`,
           time: "now",
         },
       ],
     }));
     this.socket.emit("send-message", {
       msg,
-      author: author,
+      author: this.author,
       room: id,
     });
   };
@@ -74,22 +71,17 @@ class Chat extends Component {
     return text;
   }
 
-
   render() {
-    const { id } = this.state;
+    const { id, messages } = this.state;
     const roomImg = `https://ui-avatars.com/api?name=${id}`;
 
     return (
       <div>
         <div className="chat">
-          <User
-            img={roomImg}
-            location="Cairo"
-            name={`Room ${id}`}
-          />
-          <div className={"messages"}>
-            <div className={"messages-content"}>
-              {this.state.messages.map((message) => (
+          <User img={roomImg} location="Cairo" name={`Room ${id}`} />
+          <div className="messages">
+            <div className="messages-content">
+              {messages.map((message) => (
                 <Message
                   key={message.id}
                   img={message.img}
@@ -107,4 +99,4 @@ class Chat extends Component {
   }
 }
 
-export default withRouter(Chat);
+export default Chat;
