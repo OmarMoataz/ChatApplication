@@ -1,25 +1,13 @@
-import React, { Component } from 'react';
+import React from "react";
 
-export class User extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      name: props.name,
-      location: props.location,
-      image: props.img
-    }
-  }
-
-  render()  {
-      return (
-        <div className={"chat-title"}>
-          <h1> {this.state.name}</h1>
-          {/* <h2> {this.state.location} </h2> */}
-          <figure className={"avatar"}>
-            <img src={this.state.image} alt="Profile" />
-          </figure>
-        </div>
-      )
-  }
-
-}
+export const User = (props) => {
+  return (
+    <div className={"chat-title"}>
+      <h1> {props.name}</h1>
+      <h2> {props.location} </h2>
+      <figure className={"avatar"}>
+        <img src={props.image} alt="Profile" />
+      </figure>
+    </div>
+  );
+};

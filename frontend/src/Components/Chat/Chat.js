@@ -1,83 +1,110 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
+import { withRouter } from "react-router-dom";
+
 import { Message } from "../message/message";
 import { User } from "../user/user";
 import ComposeMessage from "../ComposeMessage/ComposeMessage";
-import './Chat.css';
 
+import "./Chat.css";
 
 class Chat extends Component {
   constructor(params) {
-    super();
+    super(params);
     this.socket = socketIOClient(`http://localhost:3030/`);
     this.state = {
-      roomImg: `https://ui-avatars.com/api/?name=${params.match.params.id}`,
-      userImg: `https://ui-avatars.com/api/?name=${this.makeName()}`,
-      id: params.match.params.id,
-      messages: [
-      ]
+      messages: [],
+      id: null
     };
   }
-
-
   
+  componentDidMount() {
+    const idParser = this.props.location.pathname.split('/');
+    this.setState({ id: idParser[idParser.length - 1]});
+
+    this.setState({ author: "Omar Moataz" });
+  
+    this.socket.emit("join", this.state.id);
+  
+    this.socket.on("send-message", (msg) => {
+      console.log("This isn't getting called");
+      const currentMsg = {
+        id: new Date().getTime(),
+        author: msg.author,
+        msg: msg.msg,
+        img: `https://ui-avatars.com/api/?name=${msg.author}`,
+        time: "now",
+      };
+      this.setState((prevState) => ({
+        messages: [...prevState.messages, currentMsg],
+      }));
+    });
+  }
 
   handleSubmit = (msg) => {
-    this.setState(prevState => ({
-      messages: [...prevState.messages,  { id: new Date().getTime(), author: this.state.author, msg: msg, img: `https://ui-avatars.com/api/?name=${this.state.author}`, time: "now" }]
-    }))
-    this.socket.emit("send-message", {msg: msg, author: this.state.author, room: this.state.id})
-  }
+    const { id, author } = this.state;
+
+    this.setState((prevState) => ({
+      messages: [
+        ...prevState.messages,
+        {
+          author,
+          msg,
+          id: new Date().getTime(),
+          img: `https://ui-avatars.com/api/?name=${this.state.author}`,
+          time: "now",
+        },
+      ],
+    }));
+    this.socket.emit("send-message", {
+      msg,
+      author: author,
+      room: id,
+    });
+  };
 
   makeName() {
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+    var possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
     for (var i = 0; i < 2; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
-  
+
     return text;
   }
 
-  componentDidMount() {
-    fetch('http://uinames.com/api/').then(response => response.json())
-    .then( (data)  => {
-        this.setState({author: `${data.name} ${data.surname}`});
-        console.log(this.state);
-        }).catch(error => console.log(error));
-
-    this.socket.emit('join', this.state.id);
-    
-    this.socket.on("send-message", (msg) => {
-        console.log(msg);
-        const currentMsg =  { id: new Date().getTime(), author: msg.author, msg: msg.msg, img: `https://ui-avatars.com/api/?name=${msg.author}`, time: "now" };
-      this.setState(prevState => ({
-        messages: [...prevState.messages,  currentMsg ]
-      }))
-    }); 
-
-  }
 
   render() {
+    const { id } = this.state;
+    const roomImg = `https://ui-avatars.com/api?name=${id}`;
+
     return (
       <div>
-        <div className={"chat"}>
+        <div className="chat">
           <User
-            img={this.state.roomImg}
+            img={roomImg}
             location="Cairo"
-            name={this.state.id}
+            name={`Room ${id}`}
           />
           <div className={"messages"}>
             <div className={"messages-content"}>
-              {this.state.messages.map(message => <Message key={`${message.id}`} img={message.img} author={message.author} msg={message.msg} time={message.time} right={/*message.author != this.state.author*/ false}/>)}
+              {this.state.messages.map((message) => (
+                <Message
+                  key={message.id}
+                  img={message.img}
+                  author={message.author}
+                  msg={message.msg}
+                  time={message.time}
+                />
+              ))}
             </div>
           </div>
           <ComposeMessage onSubmit={this.handleSubmit} />
         </div>
-        <div className={"bg"} />
       </div>
     );
   }
 }
 
-export default Chat;
+export default withRouter(Chat);
