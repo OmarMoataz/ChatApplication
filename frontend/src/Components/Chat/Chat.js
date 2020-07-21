@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-// import { withRouter } from "react-router-dom";
 
 import { Message } from "../message/message";
 import { User } from "../user/user";
@@ -24,10 +23,12 @@ class Chat extends Component {
       this.socket.emit("join", this.state.id);
   
       this.socket.on("send-message", (msg) => {
+        const { author, content } = msg;
+
         const currentMsg = {
+          author,
+          content,
           id: new Date().getTime(),
-          author: msg.author,
-          msg: msg.msg,
           img: `https://ui-avatars.com/api/?name=${msg.author}`,
           time: "now",
         };
@@ -38,7 +39,7 @@ class Chat extends Component {
     })
   }
 
-  handleSubmit = (msg) => {
+  handleSubmit = (messageContent) => {
     const { id } = this.state;
 
     this.setState((prevState) => ({
@@ -46,7 +47,7 @@ class Chat extends Component {
         ...prevState.messages,
         {
           author: this.author,
-          msg,
+          content: messageContent,
           id: new Date().getTime(),
           img: `https://ui-avatars.com/api/?name=${this.author}`,
           time: "now",
@@ -54,7 +55,7 @@ class Chat extends Component {
       ],
     }));
     this.socket.emit("send-message", {
-      msg,
+      content: messageContent,
       author: this.author,
       room: id,
     });
@@ -86,7 +87,7 @@ class Chat extends Component {
                   key={message.id}
                   img={message.img}
                   author={message.author}
-                  msg={message.msg}
+                  content={message.content}
                   time={message.time}
                 />
               ))}

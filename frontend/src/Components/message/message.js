@@ -1,28 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 
-export class Message extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      author: props.author,
-      msg: props.msg,
-      image: props.img,
-      time: props.time,
-      right: props.right,
-    };
-  }
+export const Message = (props) => {
+  const { right, img, content, time } = props;
 
-  render() {
-    return (
-      <div className={this.state.right ? "right" : ""}>
-        <div className={"message new"}>
-          <figure className={"avatar"}>
-            <img src={this.state.image} alt="" />
-          </figure>
-          {this.state.msg}
-          <div className={"timestamp"}>{this.state.time}</div>
-        </div>
+  return (
+    <div className={right ? "right" : ""}>
+      <div className={"message new"}>
+        <figure className={"avatar"}>
+          <img src={img} alt="" />
+        </figure>
+        {content}
+        <div className={"timestamp"}>{time}</div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
